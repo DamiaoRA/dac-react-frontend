@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormGroup from "../../components/FormGroup";
 import Navbar from "../../components/Navbar";
+import axios from "axios";
 
 function CreateUser() {
   const location = useLocation();
@@ -24,17 +25,33 @@ function CreateUser() {
         [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
-    
-    if (formData.senha !== formData.confirmarSenha) {
-      setMensagemErro("As senhas não coincidem.");
-      return;
-    }
 
-    setMensagemErro("");
-    alert("Cadastro realizado com sucesso!");
-    console.log("Usuário cadastrado:", formData);
+    axios.post('http://localhost:8080/api/user/save', 
+      {
+        "firstName":formData.nome,
+        "lastName":formData.email,
+        "gender":"MALE",
+        "dateOfBirth":"2010-09-05"
+      }) //formData
+      .then(
+        response => console.log(response))
+      .catch(
+        error => console.log(error)
+      );
+
+
+    // e.preventDefault();
+    
+    // if (formData.senha !== formData.confirmarSenha) {
+    //   setMensagemErro("As senhas não coincidem.");
+    //   return;
+    // }
+
+    // setMensagemErro("");
+    // alert("Cadastro realizado com sucesso!");
+    // console.log("Usuário cadastrado:", formData);
   };
 
   return (
