@@ -1,5 +1,5 @@
 
-function FormGroup({label, id, name, type, value, onChange, placeholder, required=true}) {
+function FormInput({label, id, name, type, value, onChange, placeholder, required=true}) {
     return (
         <div>
             <label className="col-form-label" htmlFor={id}>{label}</label>
@@ -19,4 +19,4 @@ function FormGroup({label, id, name, type, value, onChange, placeholder, require
     );
 }
 
-export default FormGroup;
+export default FormInput;

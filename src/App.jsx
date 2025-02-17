@@ -1,7 +1,8 @@
 import 'bootswatch/dist/darkly/bootstrap.min.css'
 import './App.css'
+import axiosInstance from "./main/axiosInstance";
 import Login from './screens/login/Login'
-import CreateUser from './screens/createUser/CreateUser';
+import CreateUser from './screens/user/CreateUser';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Navbar from './components/Navbar';
 import AppRoutes from './main/AppRoutes';

@@ -1,4 +1,4 @@
-import FormGroup from "../../components/FormGroup";
+import FormInput from "../../components/FormInput";
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 
@@ -19,7 +19,7 @@ function Login() {
     <>
     <h2>Login</h2>
     <div className="row">
-      <FormGroup 
+      <FormInput 
         label='Email:' 
         id='idemail' 
         name="email"
@@ -27,9 +27,9 @@ function Login() {
         value={email} 
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Digite seu e-mail">
-      </FormGroup>
+      </FormInput>
 
-      <FormGroup
+      <FormInput
         label='Password:' 
         id='idpass' 
         name="password"
@@ -37,7 +37,7 @@ function Login() {
         value={senha} 
         onChange={(e) => setSenha(e.target.value)}
         placeholder="Digite sua senha">
-      </FormGroup>
+      </FormInput>
       <div>
         <button className="btn btn-primary" onClick={() => navigate("/home")}>Entrar</button>
         <button className="btn btn-secondary" onClick={() => navigate("/createuser", {state:{hideNavbar:true}})}>Cadastrar</button>
