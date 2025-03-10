@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function NavbarItemDropDown() {
     const [isOpen, setIsOpen] = useState(false);
+    const { userRoles } = useAuth();
 
     return (
     <li className="nav-item dropdown">
@@ -13,7 +15,7 @@ function NavbarItemDropDown() {
             aria-expanded={isOpen}>Listar</a>
         {isOpen && (
         <div className="dropdown-menu show">
-            <Link className="dropdown-item" to="/userlist" onClick={() => setIsOpen(false)}>Listar usuários</Link>
+            {userRoles?.includes("ROLE_ADMIN","ROLE_MANAGER") && <Link className="dropdown-item" to="/userlist" onClick={() => setIsOpen(false)}>Listar usuários</Link>}
             <a className="dropdown-item" href="#" onClick={() => setIsOpen(false)}>Listar livros</a>
         </div>
         )}

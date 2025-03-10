@@ -1,14 +1,34 @@
 import FormInput from "../../components/FormInput";
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import '../../App.css';
 
 function Login() {
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("");
 
-  const handleLogin = () => {
-    alert('E-mail: ' + email + '\nSenha: ' + senha);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(formData);
+      navigate("/home");
+    } catch(err) {
+      if (err.message.includes("code 400")) {
+        setMessage("Usuáiro ou senha inválidos");
+        // Remove a mensagem após 3 segundos
+        setTimeout(() => setMessage(""), 3000);
+      } else {
+        console.log(err.message);
+        setMessage("Erro ao fazer login");
+      }
+    }
   };
 
   const handleRegister = () => {
@@ -17,31 +37,40 @@ function Login() {
 
   return (
     <>
+      {message && (
+        <div className="alert">
+          {message}
+        </div>
+      )}
+
     <h2>Login</h2>
     <div className="row">
-      <FormInput 
-        label='Email:' 
-        id='idemail' 
-        name="email"
-        type='email' 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Digite seu e-mail">
-      </FormInput>
+      <form onSubmit={handleSubmit}>
+        <FormInput 
+          label='Email:' 
+          id='idemail' 
+          name="email"
+          type='email' 
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Digite seu e-mail">
+        </FormInput>
 
-      <FormInput
-        label='Password:' 
-        id='idpass' 
-        name="password"
-        type='password' 
-        value={senha} 
-        onChange={(e) => setSenha(e.target.value)}
-        placeholder="Digite sua senha">
-      </FormInput>
-      <div>
-        <button className="btn btn-primary" onClick={() => navigate("/home")}>Entrar</button>
-        <button className="btn btn-secondary" onClick={() => navigate("/createuser", {state:{hideNavbar:true}})}>Cadastrar</button>
-      </div>
+        <FormInput
+          label='Password:' 
+          id='idpass' 
+          name="password"
+          type='password' 
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Digite sua senha">
+        </FormInput>
+        <div>
+          {/* <button className="btn btn-primary" onClick={() => navigate("/home")}>Entrar</button> */}
+          <button className="btn btn-primary" type="submit">Entrar</button>
+          <button className="btn btn-secondary" onClick={() => navigate("/createuser", {state:{hideNavbar:true}})}>Cadastrar</button>
+        </div>
+      </form>
     </div>
     </>
   );

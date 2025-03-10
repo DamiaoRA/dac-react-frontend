@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function UserList() {
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token"); // Recupera o token do localStorage
   const [users, setUsers] = useState([]); // Estado para armazenar os usuários
   const [loading, setLoading] = useState(true); // Estado para exibir "Carregando..."
   const [error, setError] = useState(null); // Estado para capturar erros
@@ -14,7 +15,12 @@ function UserList() {
 
   //O useEffect() garante que a requisição aconteça apenas uma vez (quando o componente for montado)
   useEffect(() => {
-    axios.get("http://localhost:8080/api/user/list")
+    axios.get("http://localhost:8080/api/user/list", 
+      {
+        headers: {
+          Authorization: `Bearer ${token}` // Envia o token no cabeçalho
+        }
+      }) 
       .then(response => {
         setUsers(response.data); // Atualiza a lista de usuários
         setLoading(false);
@@ -34,9 +40,6 @@ function UserList() {
   }
 
   const handleDeleteUser = (id) => {
-    // Exibe a mensagem de sucesso
-    setMessage("Usuário removido com sucesso!");
-
     axios.delete(`http://localhost:8080/api/user/delete/${id}`)
       .then(() => {
         // Atualiza a lista após remoção
